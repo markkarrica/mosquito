@@ -1,18 +1,18 @@
 package bitarray
 
 type BitArray struct {
-	ByteArray []byte
+	byteArray []byte
 	length    byte
 }
 
-func CreateBitArray(bitLength byte) BitArray {
+func CreateBitArray(bitLength byte) *BitArray {
 	var byteLength byte
 	if bitLength%8 == 0 {
 		byteLength = bitLength / 8
 	} else {
 		byteLength = bitLength/8 + 1
 	}
-	return BitArray{make([]byte, byteLength), bitLength}
+	return &BitArray{make([]byte, byteLength), bitLength}
 }
 
 func (ba *BitArray) GetBit(globalBitIndex byte) (bool, error) {
@@ -21,7 +21,7 @@ func (ba *BitArray) GetBit(globalBitIndex byte) (bool, error) {
 	}
 	byteIndex := globalBitIndex / 8
 	bitIndex := globalBitIndex % 8
-	return ba.ByteArray[byteIndex]&(1<<bitIndex) == (1 << bitIndex), nil
+	return ba.byteArray[byteIndex]&(1<<bitIndex) == (1 << bitIndex), nil
 }
 
 func (ba *BitArray) SetBit(globalBitIndex byte) error {
@@ -30,7 +30,7 @@ func (ba *BitArray) SetBit(globalBitIndex byte) error {
 	}
 	byteIndex := globalBitIndex / 8
 	bitIndex := globalBitIndex % 8
-	ba.ByteArray[byteIndex] |= (1 << bitIndex)
+	ba.byteArray[byteIndex] |= (1 << bitIndex)
 	return nil
 }
 
@@ -40,7 +40,7 @@ func (ba *BitArray) ResetBit(globalBitIndex byte) error {
 	}
 	byteIndex := globalBitIndex / 8
 	bitIndex := globalBitIndex % 8
-	ba.ByteArray[byteIndex] &= ^(1 << bitIndex)
+	ba.byteArray[byteIndex] &= ^(1 << bitIndex)
 	return nil
 }
 
